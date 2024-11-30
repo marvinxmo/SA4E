@@ -1,0 +1,18 @@
+
+syntax = "proto3";
+
+package firefly;
+
+service FireflyObserver {
+    rpc ReportState (FireflyState) returns (SynchronizationResponse) {}
+}
+
+message FireflyState {
+    int32 id = 1;
+    float flash_interval = 2;
+    bool is_lit = 3;
+}
+
+message SynchronizationResponse {
+    float adjustment = 1;
+}
