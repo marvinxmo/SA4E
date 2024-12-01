@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package firefly;
+
+// Observer service for registration and status updates
+service ObserverService {
+    rpc Register (RegistrationRequest) returns (RegistrationResponse) {}
+    rpc UpdateStatus (StatusUpdate) returns (Empty) {}
+}
+
+// Firefly service for neighbor communication
+service FireflyService {
+    rpc ReportFlashInterval (FlashIntervalRequest) returns (Empty) {}
+    rpc UpdateNeighbors (NeighborUpdate) returns (Empty) {}
+}
+
+message RegistrationRequest {
+    string host = 1;
+    int32 port = 2;
+}
+
+message RegistrationResponse {
+    int32 id = 1;
+    float start_time = 2;
+    repeated Neighbor neighbors = 3;
+}
+
+message NeighborUpdate {
+    repeated Neighbor neighbors = 1;
+}
+
+message Neighbor {
+    int32 id = 1;
+    string host = 2;
+    int32 port = 3;
+}
+
+message StatusUpdate {
+    int32 id = 1;
+    float flash_interval = 2;
+    bool is_lit = 3;
+}
+
+message FlashIntervalRequest {
+    int32 id = 1;
+    float flash_interval = 2;
+}
+
+message Empty {}

@@ -48,13 +48,10 @@ class Firefly:
                 font=("Arial", self.font_size)  # Set font size
             )
 
-    def get_neighbors(self):
-        # Torus-artige Nachbarschaftsbestimmung
-        return self.nb
 
     def update_flash_interval(self):
         # Mittlere Frequenz der Nachbarn berechnen und allmählich anpassen
-        neighbor_intervals = [neighbor.flash_interval for neighbor in self.get_neighbors()]
+        neighbor_intervals = [neighbor.flash_interval for neighbor in self.nb]
         average_interval = sum(neighbor_intervals) / len(neighbor_intervals)
         # Anpassung der eigenen Frequenz an die der Nachbarn
         self.flash_interval += self.adjustment_rate* (average_interval - self.flash_interval)
@@ -122,7 +119,6 @@ class FireflySimulation:
                 self.grid[x][(y - 1) % n_columns],
                 self.grid[x][(y + 1) % n_columns]
                 ]
-
 
         # Set shared start time just before starting threads
         Firefly.start_time = time.time()
