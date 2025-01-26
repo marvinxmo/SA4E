@@ -23,10 +23,12 @@ Mit den oben spezifizierten Port-Bindings haben sie dann über folgende Links Zu
 
 [http://localhost:8085/h2-console](http://localhost:8085/h2-console) : (Achtung anderer Port!) Hier kann die Datenbank mithilfe von SQL Queries abgefragt werden. Login Daten:
 
-|              |                    |
-| ------------ | ------------------ |
-| Settings     | Generic H2         |
-| Driver Class | org.h2.Driver      |
-| JDBC URL     | jdbc:h2:mem:wishdb |
-| User Name    | santa              |
-| Password     |                    |
+|                       |                          |
+| --------------------- | ------------------------ |
+| Settings              | Generic H2               |
+| Driver Class          | org.h2.Driver            |
+| JDBC URL              | jdbc:h2:mem:wishdb       |
+| User Name             | santa                    |
+| Password              |                          |
+| ------------          | -----------              |
+| SQL Query zur Abfrage | SELECT \* FROM XMAS_WISH |
