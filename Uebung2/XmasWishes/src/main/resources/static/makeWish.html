@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Submit Christmas Wish</title>
+        <style>
+            body {
+                background: linear-gradient(to bottom, #1a472a, #2d5a3f);
+                font-family: "Arial", sans-serif;
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+            }
+            .form-container {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(5px);
+                max-width: 400px;
+                width: 100%;
+            }
+            h1 {
+                color: #dddddd;
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #dddddd;
+            }
+            input {
+                width: 100%;
+                padding: 0.8rem;
+                border: none;
+                border-radius: 5px;
+                background: rgba(255, 255, 255, 0.9);
+                box-sizing: border-box;
+            }
+            button {
+                width: 100%;
+                padding: 1rem;
+                background: #c41e3a;
+                color: #dddddd;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1.1rem;
+                transition: background 0.3s;
+            }
+            button:hover {
+                background: #a01830;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="form-container">
+            <h1>
+                Hohoho! Submit your wishes below and I'll see what I can do...
+            </h1>
+            <form id="wishForm">
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" required />
+                </div>
+                <div class="form-group">
+                    <label for="wish">Your Wish:</label>
+                    <input type="text" id="wish" required />
+                </div>
+                <button type="submit">Submit Wish</button>
+            </form>
+        </div>
+
+        <script>
+            document
+                .getElementById("wishForm")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const wishData = {
+                        name: document.getElementById("name").value,
+                        wish: document.getElementById("wish").value,
+                        status: 1,
+                    };
+
+                    console.log(wishData);
+                    console.log(JSON.stringify(wishData));
+
+                    try {
+                        const response = await fetch(
+                            "http://localhost:8086/api/wish",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(wishData),
+                            }
+                        );
+                        console.log(response);
+                        const data = await response.json();
+                        alert(
+                            "We received your wish and Santa will have a look at it!"
+                        );
+                    } catch (error) {
+                        alert(
+                            "Error sending wish: " +
+                                error +
+                                "ccc: " +
+                                wishData.name
+                        );
+                    }
+                });
+        </script>
+    </body>
+</html>

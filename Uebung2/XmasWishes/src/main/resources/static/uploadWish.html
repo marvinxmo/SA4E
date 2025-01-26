@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Upload Wishlist</title>
+        <style>
+            body {
+                background: linear-gradient(to bottom, #1a472a, #2d5a3f);
+                font-family: "Arial", sans-serif;
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                flex-direction: column;
+            }
+            .upload-container {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(5px);
+                max-width: 600px;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .drop-zone {
+                background: rgba(0, 0, 0, 0.3);
+                padding: 1rem;
+                border-radius: 5px;
+                border: 2px dashed #e4c988;
+                margin: 20px 0;
+                text-align: center;
+                cursor: pointer;
+            }
+            .drop-zone:hover {
+                background: rgba(228, 201, 136, 0.1);
+            }
+            .log-container {
+                background: rgba(0, 0, 0, 0.3);
+                padding: 1rem;
+                border-radius: 5px;
+                width: auto;
+                height: 200px;
+                overflow-y: auto;
+                font-family: monospace;
+            }
+            .log-entry {
+                margin: 5px 0;
+                padding: 5px;
+            }
+            .success {
+                color: #90ee90;
+            }
+            .error {
+                color: #ffb6c1;
+            }
+            .info {
+                color: #87ceeb;
+            }
+            .json-format {
+                margin-top: 10px;
+                width: 100%;
+            }
+            .json-format textarea {
+                background: rgba(0, 0, 0, 0.3);
+                color: #fff;
+                padding: 1rem;
+                border-radius: 5px;
+                border: none;
+                font-family: monospace;
+                width: 100%;
+                box-sizing: border-box;
+                resize: none;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="upload-container">
+            <h1>
+                If you have a larger wishlist you can upload the files or the
+                complete folder here.
+            </h1>
+            <div class="drop-zone" id="dropZone">
+                Drop single JSON files or folders here (Chrome/Edge) or click to
+                select
+                <!-- Note: Adding webkitdirectory allows folder selection, but is nonstandard -->
+                <input
+                    type="file"
+                    id="fileInput"
+                    multiple
+                    accept=".json"
+                    style="display: none"
+                    webkitdirectory
+                    directory
+                />
+            </div>
+            <div class="json-format">
+                <h3>Expected Format of JSON-Files:</h3>
+                <textarea readonly rows="4">
+{
+    "name": "Your Name",
+    "wish": "Your Wish"
+}
+            </textarea
+                >
+            </div>
+        </div>
+        <div class="upload-container">
+            <h2>Upload Log</h2>
+            <div class="log-container" id="logContainer"></div>
+        </div>
+
+        <script>
+            function addLog(message, type = "info") {
+                const logContainer = document.getElementById("logContainer");
+                const entry = document.createElement("div");
+                entry.className = `log-entry ${type}`;
+                entry.textContent = message;
+                logContainer.appendChild(entry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+
+            function validateWish(json) {
+                return (
+                    json.hasOwnProperty("name") && json.hasOwnProperty("wish")
+                );
+            }
+
+            async function processFile(file) {
+                if (!file.name.endsWith(".json")) {
+                    addLog(`Skipping non-JSON file: ${file.name}`, "info");
+                    return;
+                }
+                try {
+                    const content = await file.text();
+                    var wishData = JSON.parse(content);
+                    wishData.status = 1;
+
+                    if (validateWish(wishData)) {
+                        //addLog(`File ${file.name} validated (valid XmasWish).`, 'success');
+                        console.log(wishData);
+                        const response = await fetch(
+                            "http://localhost:8086/api/wish",
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(wishData),
+                            }
+                        );
+
+                        if (response.ok) {
+                            //addLog(`File ${file.name} sent to north pole.`, 'success');
+                            addLog(
+                                `Santa received your wish for ${wishData.wish}.`,
+                                "success"
+                            );
+                        } else {
+                            throw new Error("API call failed");
+                        }
+                    } else {
+                        addLog(
+                            `File ${file.name} is not a valid XmasWish.`,
+                            "error"
+                        );
+                    }
+                } catch (error) {
+                    addLog(
+                        `Error processing ${file.name}: ${error.message}`,
+                        "error"
+                    );
+                }
+                addLog("Continue with next file...", "info");
+            }
+
+            // Recursively read directory entries if available in the browser
+            function traverseFileTree(item) {
+                if (item.isFile) {
+                    item.file(async (file) => {
+                        await processFile(file);
+                    });
+                } else if (item.isDirectory) {
+                    const dirReader = item.createReader();
+                    dirReader.readEntries((entries) => {
+                        for (const entry of entries) {
+                            traverseFileTree(entry);
+                        }
+                    });
+                }
+            }
+
+            async function handleDrop(e) {
+                e.preventDefault();
+                dropZone.style.background = "";
+                const items = e.dataTransfer.items;
+                if (items) {
+                    for (const item of items) {
+                        const entry =
+                            item.webkitGetAsEntry && item.webkitGetAsEntry();
+                        if (entry) {
+                            traverseFileTree(entry);
+                        } else {
+                            // Fallback for browsers without webkitGetAsEntry
+                            const file = item.getAsFile();
+                            if (file) {
+                                await processFile(file);
+                            }
+                        }
+                    }
+                } else {
+                    // Fallback for older browsers
+                    const files = [...e.dataTransfer.files];
+                    for (const file of files) {
+                        await processFile(file);
+                    }
+                }
+            }
+
+            const dropZone = document.getElementById("dropZone");
+            const fileInput = document.getElementById("fileInput");
+
+            dropZone.addEventListener("click", () => fileInput.click());
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.style.background = "rgba(228, 201, 136, 0.2)";
+            });
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.style.background = "";
+            });
+            dropZone.addEventListener("drop", handleDrop);
+
+            fileInput.addEventListener("change", async () => {
+                const files = [...fileInput.files];
+                addLog(`Processing ${files.length} file(s)...`, "info");
+                for (const file of files) {
+                    await processFile(file);
+                }
+            });
+        </script>
+    </body>
+</html>

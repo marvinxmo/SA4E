@@ -1,0 +1,20 @@
+# Maven target directory
+target/
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Node modules
+node_modules/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Other temporary files
+*.tmp
+*.swp
