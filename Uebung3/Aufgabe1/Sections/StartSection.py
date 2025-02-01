@@ -7,7 +7,7 @@ from kafka import KafkaProducer, KafkaConsumer
 class StartSection:
 
     def __init__(self, successor_name):
-        # Players of form {"id": 1, "position": 0, "laps_completed": 0, "start_time": 0}
+        # Players of form {"id": 1, "position": 0, "laps_completed": 0, "start_time": 0, "finish_time": 0}
         self.name = "start_section"
         self.successor_name = successor_name
         self.players = []
@@ -19,16 +19,23 @@ class StartSection:
         self.consumer_thread.daemon = True
         self.consumer_thread.start()
 
+        print(f"{self.name} section initialized")
+
     def forward_players(self):
         for message in self.consumer:
             player = message.value
             player['position'] = 0
-            print(f"Player received at start: {player}")
             self.producer.send(self.successor_name, player)
-            print(f"Player sent from start to {self.successor_name}: {player}")
+            print(f"Moved Player {player["id"]} from {self.name} to {self.successor_name}")
+
 
     def add_player(self):
-        player = {"id": len(self.players) + 1, "position": 0, "laps_completed": 0, "start_time": 0}
+        player = {"id": len(self.players) + 1, 
+                  "position": 0, 
+                  "laps_completed": 0, 
+                  "start_time": 0, 
+                  "isFinished": False, 
+                  "finish_time": 0}
         self.players.append(player)
         return f"New Player created: {player}"
     

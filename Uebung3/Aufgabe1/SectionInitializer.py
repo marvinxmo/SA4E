@@ -41,25 +41,55 @@ def initialize_sections(track_config, num_laps):
             sections["finish_section"] = FinishSection(num_laps)
     return sections
 
+def shutdown_track(sections):
+    for section in sections.values():
+        section.producer.close()
+        section.consumer.close()
+        section.consumer_thread.join()
+
+
+
 def main():
+    
     track_config = load_track_config()
 
-    num_laps = get_input("Enter number of laps (default 3): ", 3, int)
     num_players = get_input("Enter number of players (default 1): ", 1, int)
+    num_laps = get_input("Enter number of laps (default 3): ", 3, int)
 
+    print("----------------------------------")
+    print("Initializing sections...")
     sections = initialize_sections(track_config, num_laps)
-    print("initialized")
     start_section = sections["start_section"]
+    finish_section = sections["finish_section"]
+    
+
+    print("----------------------------------")
+    print("Adding players...")
 
     for _ in range(num_players):
         print(start_section.add_player())
 
-    print("Race started")
+    time.sleep(5)
+
+    print("----------------------------------")
+    print("Start Race...")
     start_section.start_race()
-    #print("Race ended")
+
 
     while True:
-        time.sleep(1)
+        if finish_section.num_finished_players == num_players:
+            print("Race finished...")
+            print("----------------------------------")
+            break
+        else:
+            print("Waiting for all players to finish...")
+            time.sleep(2)
+
+    print("Race results:")
+    for player in finish_section.finished_players:
+        print(f"Player {player['id']} completed {num_laps} laps in {round(player['finish_time'] - player['start_time'], 4)} seconds")
+
+
 
 if __name__ == "__main__":
     main()

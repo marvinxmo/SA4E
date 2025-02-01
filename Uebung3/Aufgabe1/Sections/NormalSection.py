@@ -18,11 +18,12 @@ class NormalSection:
         self.consumer_thread.daemon = True
         self.consumer_thread.start()
 
+        print(f"{self.name} section initialized")
+
     def forward_players(self):
         for message in self.consumer:
             player = message.value
             player['position'] += 1
-
-            print(f"Player received at {self.name}: {player}")
+            
             self.producer.send(self.successor_name, player)
-            print(f"Player sent from {self.name} to {self.successor_name}: {player}")
+            print(f"Moved Player {player["id"]} from {self.name} to {self.successor_name}")
