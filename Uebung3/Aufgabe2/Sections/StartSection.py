@@ -13,16 +13,22 @@ class StartSection:
         self.players = []
 
         self.producer = KafkaProducer(
-            bootstrap_servers=["localhost:9095"],
+            bootstrap_servers=["localhost:9092", "localhost:9093", "localhost:9094"],
             value_serializer=lambda v: json.dumps(v).encode("utf-8"),
             api_version=(0, 10),
+            acks="all",
+            retries=2,
+            retry_backoff_ms=500,
+            metadata_max_age_ms=5000,
+            max_in_flight_requests_per_connection=1,
         )
 
         self.consumer = KafkaConsumer(
             "start_section",
-            bootstrap_servers=["localhost:9095"],
+            bootstrap_servers=["localhost:9092", "localhost:9093", "localhost:9094"],
             value_deserializer=lambda m: json.loads(m.decode("utf-8")),
             api_version=(0, 10),
+            # group_id="ave_caesar",
         )
 
         # Start the consumer thread

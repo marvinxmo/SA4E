@@ -31,19 +31,38 @@ def get_input(prompt, default, cast_func):
             print(f"Invalid input. Please enter a valid value.")
 
 
-def initialize_sections(track_config, num_laps):
+def add_topic_to_kafka_cluster(kafka_admin_client, topic_name):
+    try:
+        topic = NewTopic(
+            name=topic_name,
+            replication_factor=3,
+            num_partitions=1,
+            topic_configs={
+                "min.insync.replicas": "1",
+            },
+        )
+        kafka_admin_client.create_topics([topic])
+    except TopicAlreadyExistsError as e:
+        print(f"{e.message}")
 
+
+def initialize_sections(track_config, num_laps):
     sections = {}
+
+    admin = KafkaAdminClient(
+        bootstrap_servers=["localhost:9092", "localhost:9093", "localhost:9094"],
+    )
 
     for segment in track_config["segments"]:
 
         if segment["type"] == "start":
+            add_topic_to_kafka_cluster(admin, "start_section")
             sections["start_section"] = StartSection(
                 successor_name=f"section_{segment['nextSegment']}"
             )
 
         elif segment["type"] == "normal":
-
+            add_topic_to_kafka_cluster(admin, f"section_{segment['id']}")
             if segment["nextSegment"] == 1000:
                 sections[f"section_{segment['id']}"] = NormalSection(
                     self_name=f"section_{segment['id']}",
@@ -56,6 +75,7 @@ def initialize_sections(track_config, num_laps):
                 )
 
         elif segment["type"] == "finish":
+            add_topic_to_kafka_cluster(admin, "finish_section")
             sections["finish_section"] = FinishSection(num_laps)
 
     return sections
@@ -87,7 +107,12 @@ def main():
     for _ in range(num_players):
         print(start_section.add_player())
 
-    time.sleep(1)
+    print("----------------------------------")
+    print(
+        "An outage of one of the Kafka brokers can now be simulated by stopping one of the containers."
+    )
+    print("Press ENTER to continue and start the race.")
+    input()
 
     print("----------------------------------")
     print("Start Race...")
