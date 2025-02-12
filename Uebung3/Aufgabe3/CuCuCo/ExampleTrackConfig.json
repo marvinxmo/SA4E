@@ -1,0 +1,160 @@
+{
+    "segments": [
+        {
+            "id": "0",
+            "type": "start",
+            "nextSegment": "N1"
+        },
+        {
+            "id": "N1",
+            "type": "normal",
+            "nextSegment": "B1"
+        },
+        {
+            "id": "B1",
+            "type": "bottleneck",
+            "nextSegment": "S1"
+        },
+        {
+            "id": "S1",
+            "type": "split",
+            "subPaths": [
+                [
+                    {
+                        "id": "S1.1.1",
+                        "type": "normal",
+                        "nextSegment": "S1.1.2"
+                    },
+                    {
+                        "id": "S1.1.2",
+                        "type": "caesar",
+                        "nextSegment": "S1.1.3"
+                    },
+                    {
+                        "id": "S1.1.3",
+                        "type": "split",
+                        "subPaths": [
+                            [
+                                {
+                                    "id": "S1.1.3.1.1",
+                                    "type": "normal",
+                                    "nextSegment": "S1.1.3.1.2"
+                                },
+                                {
+                                    "id": "S1.1.3.1.2",
+                                    "type": "bottleneck",
+                                    "nextSegment": "S1.1.3.1.3"
+                                },
+                                {
+                                    "id": "S1.1.3.1.3",
+                                    "type": "normal",
+                                    "nextSegment": "C1"
+                                }
+                            ],
+                            [
+                                {
+                                    "id": "S1.1.3.2.1",
+                                    "type": "caesar",
+                                    "nextSegment": "S1.1.3.2.2"
+                                },
+                                {
+                                    "id": "S1.1.3.2.2",
+                                    "type": "normal",
+                                    "nextSegment": "C1"
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "id": "S1.2.1",
+                        "type": "bottleneck",
+                        "nextSegment": "S1.2.2"
+                    },
+                    {
+                        "id": "S1.2.2",
+                        "type": "bottleneck",
+                        "nextSegment": "S1.2.3"
+                    },
+                    {
+                        "id": "S1.2.3",
+                        "type": "normal",
+                        "nextSegment": "C1"
+                    }
+                ]
+            ]
+        },
+
+        {
+            "id": "C1",
+            "type": "caesar",
+            "nextSegment": "N2"
+        },
+        {
+            "id": "N2",
+            "type": "normal",
+            "nextSegment": "B2"
+        },
+        {
+            "id": "B2",
+            "type": "bottleneck",
+            "nextSegment": "N3"
+        },
+        {
+            "id": "N3",
+            "type": "normal",
+            "nextSegment": "N4"
+        },
+        {
+            "id": "N4",
+            "type": "normal",
+            "nextSegment": "S2"
+        },
+        {
+            "id": "S2",
+            "type": "split",
+            "subPaths": [
+                [
+                    {
+                        "id": "S2.1.1",
+                        "type": "normal",
+                        "nextSegment": "S2.1.2"
+                    },
+                    {
+                        "id": "S2.1.2",
+                        "type": "normal",
+                        "nextSegment": "S2.1.3"
+                    },
+                    {
+                        "id": "S2.1.3",
+                        "type": "normal",
+                        "nextSegment": "finish_section"
+                    }
+                ],
+                [
+                    {
+                        "id": "S2.2.1",
+                        "type": "normal",
+                        "nextSegment": "S2.2.2"
+                    },
+                    {
+                        "id": "S2.2.2",
+                        "type": "caesar",
+                        "nextSegment": "S2.2.3"
+                    },
+                    {
+                        "id": "S2.2.3",
+                        "type": "normal",
+                        "nextSegment": "finish_section"
+                    }
+                ]
+            ]
+        },
+        {
+            "id": "finish_section",
+            "type": "finish",
+            "nextSegment": null
+        }
+    ]
+}

@@ -1,0 +1,129 @@
+import json
+import os
+import time
+from kafka.admin import KafkaAdminClient, NewTopic
+from kafka.errors import TopicAlreadyExistsError
+from Sections.StartSection import StartSection
+from Sections.NormalSection import NormalSection
+from Sections.FinishSection import FinishSection
+from Sections.BottleneckSection import BottleneckSection
+from Sections.CaesarSection import CaesarSection
+from Sections.SplitSection import SplitSection
+
+
+def load_track_config():
+    my_path = os.path.dirname(__file__)
+    try:
+        with open(f"{my_path}/CuCuCo/ExampleTrackConfig.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(
+            "Error: TrackConfig.json not found. Please create it using RaceTrack.py first."
+        )
+        exit(1)
+
+
+def get_input(prompt, default, cast_func):
+    while True:
+        user_input = input(prompt)
+        if user_input == "":
+            return default
+        try:
+            return cast_func(user_input)
+        except ValueError:
+            print(f"Invalid input. Please enter a valid value.")
+
+
+def initialize_sections(track_config, num_laps):
+
+    sections = {}
+
+    for segment in track_config["segments"]:
+
+        if segment["type"] == "start":
+            sections["start_section"] = StartSection(
+                successor_name=f"{segment['nextSegment']}"
+            )
+
+        elif segment["type"] == "normal":
+
+            sections[f"{segment['id']}"] = NormalSection(
+                self_name=f"{segment['id']}",
+                successor_name=f"{segment['nextSegment']}",
+            )
+
+        elif segment["type"] == "bottleneck":
+
+            sections[f"{segment['id']}"] = BottleneckSection(
+                self_name=f"{segment['id']}",
+                successor_name=f"{segment['nextSegment']}",
+            )
+
+        elif segment["type"] == "caesar":
+
+            sections[f"{segment['id']}"] = CaesarSection(
+                self_name=f"{segment['id']}",
+                successor_name=f"{segment['nextSegment']}",
+            )
+
+        elif segment["type"] == "split":
+
+            sections[f"{segment['id']}"] = SplitSection(
+                self_name=f"{segment['id']}",
+                sub_paths=segment["subPaths"],
+            )
+
+        elif segment["type"] == "finish":
+            sections["finish_section"] = FinishSection(num_laps)
+
+    return sections
+
+
+def shutdown_track(sections):
+    for section in sections.values():
+        section.close_section()
+
+
+def main():
+
+    track_config = load_track_config()
+
+    num_players = get_input("Enter number of players (default 1): ", 1, int)
+    num_laps = get_input("Enter number of laps (default 3): ", 3, int)
+
+    print("----------------------------------")
+    print("Initializing sections...")
+    sections = initialize_sections(track_config, num_laps)
+    start_section = sections["start_section"]
+    finish_section = sections["finish_section"]
+
+    print("----------------------------------")
+    print("Adding players...")
+
+    for _ in range(num_players):
+        print(start_section.add_player())
+
+    time.sleep(1)
+
+    print("----------------------------------")
+    print("Start Race...")
+    start_section.start_race()
+
+    while True:
+        time.sleep(2)
+        if finish_section.num_finished_players == num_players:
+            print("Race finished...")
+            print("----------------------------------")
+            break
+        # else:
+        #     print("Waiting for all players to finish...")
+
+    print("Race results:")
+    for player in finish_section.finished_players:
+        print(
+            f"Player {player['id']} completed {num_laps} laps in {round(player['finish_time'] - player['start_time'], 4)} seconds"
+        )
+
+
+if __name__ == "__main__":
+    main()
