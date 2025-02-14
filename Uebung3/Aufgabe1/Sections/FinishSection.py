@@ -54,13 +54,11 @@ class FinishSection:
                 self.num_finished_players += 1
                 self.finished_players.append(player)
                 print(
-                    f"Player {player['id']} finished the race in {
-                      player['finish_time'] - player['start_time']} seconds"
+                    f"Player {player['id']} finished the race in {player['finish_time'] - player['start_time']} seconds"
                 )
                 continue
 
             self.producer.send(self.successor_name, player)
             print(
-                f"Moved Player {player['id']} from {
-                  self.name} to {self.successor_name} (NEXT ROUND)"
+                f"Moved Player {player['id']} from {self.name} to {self.successor_name} (NEXT ROUND)"
             )
