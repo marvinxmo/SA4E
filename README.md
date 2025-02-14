@@ -4,7 +4,7 @@ Repo zur Übung Software Architecture for Enterprises WS24/25
 
 ## Hinweise zu Übung 3
 
-Steps to run the code for Uebung 3.
+Erstelle Venv für Dependencies in Übung 3
 
 ```bash
 ### Navigate to Uebung3 dir
@@ -24,44 +24,11 @@ pip install -r requirements.txt
 
 Jede der Aufgaben 1 bis 3 hat eine eigene docker-compose.yaml
 
-**Run Aufgabe1**
+**Run Aufgabe{X}**
 
 ```bash
-### Navigate to Aufgabe1 dir
-cd Aufgabe1
-
-### Start docker network with Kafka server and zookeeper
-docker compose -f "docker-compose.yml" up -d --build
-
-### Start the Race
-python SectionInitializer.py
-
-### Stop docker network to prevent port conflicts
-docker compose -f "docker-compose.yml" down
-```
-
-**Run Aufgabe2**
-
-```bash
-### Navigate to Aufgabe2 dir
-cd Aufgabe2
-
-### Start docker network with three Kafka servers
-docker compose -f "docker-compose.yml" up -d --build
-
-### Start the Race (includes a wait to simulate outage of one of the kafka server)
-python SectionInitializer.py
-
-### Stop docker network to prevent port conflicts
-docker compose -f "docker-compose.yml" down
-
-```
-
-**Run Aufgabe3**
-
-```bash
-### Navigate to Aufgabe3 dir
-cd Aufgabe3
+### Navigate to Aufgabe{X} dir
+cd Aufgabe{X}
 
 ### Start docker network
 docker compose -f "docker-compose.yml" up -d --build

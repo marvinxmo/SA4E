@@ -18,6 +18,11 @@
         {
             "id": "N3",
             "type": "normal",
+            "nextSegment": "N4"
+        },
+        {
+            "id": "N4",
+            "type": "normal",
             "nextSegment": "finish_section"
         },
         {
