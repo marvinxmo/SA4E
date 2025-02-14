@@ -49,7 +49,7 @@ class CaesarSection:
 
             self.producer.send(self.successor_name, player)
             print(
-                f"Moved Player {player["id"]} from {self.name} to {self.successor_name}"
+                f"Moved Player {player['id']} from {self.name} to {self.successor_name}"
             )
 
     def close_section(self):

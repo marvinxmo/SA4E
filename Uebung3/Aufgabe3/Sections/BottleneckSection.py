@@ -44,7 +44,7 @@ class BottleneckSection:
             player = message.value
 
             if self.blocked:
-                print(f"Player {player["id"]} is blocked by the bottleneck")
+                print(f"Player {player['id']} is blocked by the bottleneck")
                 while self.blocked:
                     time.sleep(0.2)
 
@@ -52,14 +52,14 @@ class BottleneckSection:
             player["position"] = self.name
             wait_time = random.randint(1, 3)
             print(
-                f"Player {player["id"]} is blocking bottleneck {self.name} for {wait_time} seconds"
+                f"Player {player['id']} is blocking bottleneck {self.name} for {wait_time} seconds"
             )
             time.sleep(wait_time)
             self.blocked = False
 
             self.producer.send(self.successor_name, player)
             print(
-                f"Moved Player {player["id"]} from {self.name} to {self.successor_name}"
+                f"Moved Player {player['id']} from {self.name} to {self.successor_name}"
             )
 
     def close_section(self):

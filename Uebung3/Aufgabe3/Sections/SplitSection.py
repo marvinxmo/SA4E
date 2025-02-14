@@ -75,12 +75,12 @@ class SplitSection:
             send_to_section = self.subSections[choose_subPath]
 
             print(
-                f"Player {player["id"]} chose SubPath {choose_subPath} at Split {self.name}"
+                f"Player {player['id']} chose SubPath {choose_subPath} at Split {self.name}"
             )
 
             self.producer.send(send_to_section.name, player)
             print(
-                f"Moved Player {player["id"]} from {self.name} to {send_to_section.name}"
+                f"Moved Player {player['id']} from {self.name} to {send_to_section.name}"
             )
 
     def close_section(self):
