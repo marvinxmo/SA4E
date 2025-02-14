@@ -1,0 +1,29 @@
+{
+    "segments": [
+        {
+            "id": "start_section",
+            "type": "start",
+            "nextSegment": "N1"
+        },
+        {
+            "id": "N1",
+            "type": "normal",
+            "nextSegment": "N2"
+        },
+        {
+            "id": "N2",
+            "type": "normal",
+            "nextSegment": "N3"
+        },
+        {
+            "id": "N3",
+            "type": "normal",
+            "nextSegment": "finish_section"
+        },
+        {
+            "id": "finish_section",
+            "type": "finish",
+            "nextSegment": null
+        }
+    ]
+}

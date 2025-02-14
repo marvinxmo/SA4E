@@ -8,10 +8,10 @@ from Sections.NormalSection import NormalSection
 from Sections.FinishSection import FinishSection
 
 
-def load_track_config():
+def load_track_config(track_file):
     my_path = os.path.dirname(__file__)
     try:
-        with open(f"{my_path}/CuCuCo/TrackConfig.json", "r") as f:
+        with open(f"{my_path}/CuCuCo/{track_file}", "r") as f:
             return json.load(f)
     except FileNotFoundError:
         print(
@@ -70,7 +70,22 @@ def shutdown_track(sections):
 
 def main():
 
-    track_config = load_track_config()
+    track_config_wish = get_input(
+        "Use ExampleTrackConfig.json (1) or MyTrackConfig.json (2): ",
+        1,
+        lambda x: (
+            int(x)
+            if int(x) in [1, 2]
+            else (_ for _ in ()).throw(ValueError("Only 1 or 2 allowed"))
+        ),
+    )
+
+    if track_config_wish == 1:
+        track_file = "ExampleTrackConfig.json"
+    elif track_config_wish == 2:
+        track_file = "MyTrackConfig.json"
+
+    track_config = load_track_config(track_file)
 
     num_players = get_input("Enter number of players (default 1): ", 1, int)
     num_laps = get_input("Enter number of laps (default 3): ", 3, int)

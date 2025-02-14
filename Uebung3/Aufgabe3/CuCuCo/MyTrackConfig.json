@@ -3,26 +3,92 @@
         {
             "id": "start_section",
             "type": "start",
+            "nextSegment": "B4"
+        },
+        {
+            "id": "B4",
+            "type": "bottleneck",
+            "nextSegment": "S3"
+        },
+        {
+            "id": "S3",
+            "type": "split",
+            "subPaths": [
+                [
+                    {
+                        "id": "S3.1.1",
+                        "type": "normal",
+                        "nextSegment": "S3.1.2"
+                    },
+                    {
+                        "id": "S3.1.2",
+                        "type": "normal",
+                        "nextSegment": "S3.1.3"
+                    },
+                    {
+                        "id": "S3.1.3",
+                        "type": "normal",
+                        "nextSegment": "N5"
+                    }
+                ],
+                [
+                    {
+                        "id": "S3.2.1",
+                        "type": "normal",
+                        "nextSegment": "S3.2.2"
+                    },
+                    {
+                        "id": "S3.2.2",
+                        "type": "normal",
+                        "nextSegment": "S3.2.3"
+                    },
+                    {
+                        "id": "S3.2.3",
+                        "type": "normal",
+                        "nextSegment": "N5"
+                    }
+                ]
+            ],
             "nextSegment": "N5"
         },
         {
             "id": "N5",
             "type": "normal",
-            "nextSegment": "N2"
+            "nextSegment": "N3"
         },
         {
-            "id": "N2",
+            "id": "N3",
+            "type": "normal",
+            "nextSegment": "B2"
+        },
+        {
+            "id": "B2",
+            "type": "bottleneck",
+            "nextSegment": "C2"
+        },
+        {
+            "id": "C2",
+            "type": "caesar",
+            "nextSegment": "N1"
+        },
+        {
+            "id": "N1",
             "type": "normal",
             "nextSegment": "B1"
         },
         {
             "id": "B1",
             "type": "bottleneck",
-            "nextSegment": "N3"
+            "nextSegment": "N2"
         },
         {
-            "id": "N3",
+            "id": "N2",
             "type": "normal",
+            "nextSegment": "C1"
+        },
+        {
+            "id": "C1",
+            "type": "caesar",
             "nextSegment": "S1"
         },
         {
@@ -43,7 +109,7 @@
                     {
                         "id": "S1.1.3",
                         "type": "normal",
-                        "nextSegment": "N4"
+                        "nextSegment": "S2"
                     }
                 ],
                 [
@@ -60,24 +126,106 @@
                     {
                         "id": "S1.2.3",
                         "type": "normal",
-                        "nextSegment": "N4"
+                        "nextSegment": "S2"
                     }
                 ]
             ],
+            "nextSegment": "S2"
+        },
+        {
+            "id": "S2",
+            "type": "split",
+            "subPaths": [
+                [
+                    {
+                        "id": "S2.1.1",
+                        "type": "normal",
+                        "nextSegment": "S2.1.2"
+                    },
+                    {
+                        "id": "S2.1.2",
+                        "type": "normal",
+                        "nextSegment": "S2.1.3"
+                    },
+                    {
+                        "id": "S2.1.3",
+                        "type": "normal",
+                        "nextSegment": "S4"
+                    }
+                ],
+                [
+                    {
+                        "id": "S2.2.1",
+                        "type": "normal",
+                        "nextSegment": "S2.2.2"
+                    },
+                    {
+                        "id": "S2.2.2",
+                        "type": "normal",
+                        "nextSegment": "S2.2.3"
+                    },
+                    {
+                        "id": "S2.2.3",
+                        "type": "normal",
+                        "nextSegment": "S4"
+                    }
+                ]
+            ],
+            "nextSegment": "S4"
+        },
+        {
+            "id": "S4",
+            "type": "split",
+            "subPaths": [
+                [
+                    {
+                        "id": "S4.1.1",
+                        "type": "normal",
+                        "nextSegment": "S4.1.2"
+                    },
+                    {
+                        "id": "S4.1.2",
+                        "type": "normal",
+                        "nextSegment": "S4.1.3"
+                    },
+                    {
+                        "id": "S4.1.3",
+                        "type": "normal",
+                        "nextSegment": "B5"
+                    }
+                ],
+                [
+                    {
+                        "id": "S4.2.1",
+                        "type": "normal",
+                        "nextSegment": "S4.2.2"
+                    },
+                    {
+                        "id": "S4.2.2",
+                        "type": "normal",
+                        "nextSegment": "S4.2.3"
+                    },
+                    {
+                        "id": "S4.2.3",
+                        "type": "normal",
+                        "nextSegment": "B5"
+                    }
+                ]
+            ],
+            "nextSegment": "B5"
+        },
+        {
+            "id": "B5",
+            "type": "bottleneck",
+            "nextSegment": "B3"
+        },
+        {
+            "id": "B3",
+            "type": "bottleneck",
             "nextSegment": "N4"
         },
         {
             "id": "N4",
-            "type": "normal",
-            "nextSegment": "C1"
-        },
-        {
-            "id": "C1",
-            "type": "caesar",
-            "nextSegment": "N1"
-        },
-        {
-            "id": "N1",
             "type": "normal",
             "nextSegment": "finish_section"
         },

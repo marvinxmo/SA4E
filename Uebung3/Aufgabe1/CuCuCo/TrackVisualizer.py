@@ -4,7 +4,7 @@ from collections import deque
 import os
 import json
 from matplotlib.lines import Line2D
-from networkx.drawing.nx_agraph import graphviz_layout
+
 
 SECTION_COLORS = {
     "start": "green",
@@ -128,12 +128,8 @@ def layered_layout(G):
 def draw_track_graph(G, title="Track Visualization"):
     pos = layered_layout(G)
     pos = {node: (-y, x) for (node, (x, y)) in pos.items()}
-
-    # nx.nx_agraph.write_dot(G, "test.dot") > requires pygraphviz which requires C/C++ compiler so better use own pos
-    # pos = graphviz_layout(G, prog="dot") > requires pygraphviz which requires C/C++ compiler so better use own pos
-
     color_map = [data.get("color", "gray") for _, data in G.nodes(data=True)]
-
+    # pos = nx.circular_layout(G)
     nx.draw(
         G,
         pos,

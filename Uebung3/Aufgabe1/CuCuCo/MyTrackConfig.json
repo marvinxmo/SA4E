@@ -1,0 +1,54 @@
+{
+    "segments": [
+        {
+            "id": "start_section",
+            "type": "start",
+            "nextSegment": "N1"
+        },
+        {
+            "id": "N1",
+            "type": "normal",
+            "nextSegment": "N2"
+        },
+        {
+            "id": "N2",
+            "type": "normal",
+            "nextSegment": "N3"
+        },
+        {
+            "id": "N3",
+            "type": "normal",
+            "nextSegment": "N4"
+        },
+        {
+            "id": "N4",
+            "type": "normal",
+            "nextSegment": "N5"
+        },
+        {
+            "id": "N5",
+            "type": "normal",
+            "nextSegment": "N6"
+        },
+        {
+            "id": "N6",
+            "type": "normal",
+            "nextSegment": "N7"
+        },
+        {
+            "id": "N7",
+            "type": "normal",
+            "nextSegment": "N8"
+        },
+        {
+            "id": "N8",
+            "type": "normal",
+            "nextSegment": "finish_section"
+        },
+        {
+            "id": "finish_section",
+            "type": "finish",
+            "nextSegment": null
+        }
+    ]
+}
