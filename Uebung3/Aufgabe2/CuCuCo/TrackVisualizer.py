@@ -140,10 +140,7 @@ def draw_track_graph(G, title="Track Visualization"):
         font_color="black",
     )
 
-    labels = {
-        n: f"{data["section_type"]}"  # ({data.get('section_type', 'unknown')})"
-        for n, data in G.nodes(data=True)
-    }
+    labels = {n: f"{data['section_type']}" for n, data in G.nodes(data=True)}
 
     # Create legend
     legend_elements = [
