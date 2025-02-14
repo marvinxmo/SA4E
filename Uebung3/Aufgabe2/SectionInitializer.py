@@ -58,20 +58,20 @@ def initialize_sections(track_config, num_laps):
         if segment["type"] == "start":
             add_topic_to_kafka_cluster(admin, "start_section")
             sections["start_section"] = StartSection(
-                successor_name=f"section_{segment['nextSegment']}"
+                successor_name=f"{segment['nextSegment']}"
             )
 
         elif segment["type"] == "normal":
-            add_topic_to_kafka_cluster(admin, f"section_{segment['id']}")
+            add_topic_to_kafka_cluster(admin, f"{segment['id']}")
             if segment["nextSegment"] == 1000:
-                sections[f"section_{segment['id']}"] = NormalSection(
-                    self_name=f"section_{segment['id']}",
+                sections[f"{segment['id']}"] = NormalSection(
+                    self_name=f"{segment['id']}",
                     successor_name="finish_section",
                 )
             else:
-                sections[f"section_{segment['id']}"] = NormalSection(
-                    self_name=f"section_{segment['id']}",
-                    successor_name=f"section_{segment['nextSegment']}",
+                sections[f"{segment['id']}"] = NormalSection(
+                    self_name=f"{segment['id']}",
+                    successor_name=f"{segment['nextSegment']}",
                 )
 
         elif segment["type"] == "finish":
@@ -86,9 +86,6 @@ def shutdown_track(sections):
         section.producer.close()
         section.consumer.close()
         section.consumer_thread.join()
-
-
-
 
 
 def main():
