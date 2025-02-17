@@ -122,12 +122,12 @@ def main():
     for _ in range(num_players):
         print(start_section.add_player())
 
-    print("----------------------------------")
-    print(
-        "An outage of one of the Kafka brokers can now be simulated by stopping one of the containers."
-    )
-    print("Press ENTER to continue and start the race.")
-    input()
+    # print("----------------------------------")
+    # print(
+    #     "An outage of one of the Kafka brokers can now be simulated by stopping one of the containers."
+    # )
+    # print("Press ENTER to continue and start the race.")
+    # input()
 
     print("----------------------------------")
     print("Start Race...")

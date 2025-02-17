@@ -33,11 +33,6 @@
         {
             "id": "N6",
             "type": "normal",
-            "nextSegment": "N7"
-        },
-        {
-            "id": "N7",
-            "type": "normal",
             "nextSegment": "finish_section"
         },
         {
