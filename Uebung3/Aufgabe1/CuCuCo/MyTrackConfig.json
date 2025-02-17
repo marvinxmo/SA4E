@@ -28,21 +28,6 @@
         {
             "id": "N5",
             "type": "normal",
-            "nextSegment": "N6"
-        },
-        {
-            "id": "N6",
-            "type": "normal",
-            "nextSegment": "N7"
-        },
-        {
-            "id": "N7",
-            "type": "normal",
-            "nextSegment": "N8"
-        },
-        {
-            "id": "N8",
-            "type": "normal",
             "nextSegment": "finish_section"
         },
         {

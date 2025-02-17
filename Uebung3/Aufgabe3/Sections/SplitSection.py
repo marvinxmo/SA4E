@@ -62,7 +62,7 @@ class SplitSection:
                         SplitSection(section["id"], section["subPaths"])
                     )
                 else:
-                    raise ValueError(f"Unknown section type {section["type"]}")
+                    raise ValueError(f"Unknown section type {section['type']}")
 
     def forward_players(self):
         for message in self.consumer:

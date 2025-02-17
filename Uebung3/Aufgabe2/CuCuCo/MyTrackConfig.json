@@ -23,6 +23,21 @@
         {
             "id": "N4",
             "type": "normal",
+            "nextSegment": "N5"
+        },
+        {
+            "id": "N5",
+            "type": "normal",
+            "nextSegment": "N6"
+        },
+        {
+            "id": "N6",
+            "type": "normal",
+            "nextSegment": "N7"
+        },
+        {
+            "id": "N7",
+            "type": "normal",
             "nextSegment": "finish_section"
         },
         {

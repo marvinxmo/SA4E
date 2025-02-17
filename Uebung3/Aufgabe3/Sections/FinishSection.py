@@ -42,11 +42,10 @@ class FinishSection:
 
         for message in self.consumer:
             player = message.value
-            player["position"] += 1
+            player["position"] = self.name
             player["laps_completed"] += 1
             print(
-                f"Player {player['id']} completed {
-                  player['laps_completed']}/{self.num_laps} laps"
+                f"Player {player['id']} completed {player['laps_completed']}/{self.num_laps} laps"
             )
 
             if player["laps_completed"] >= self.num_laps:
